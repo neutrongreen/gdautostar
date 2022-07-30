@@ -1,0 +1,157 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Interface/TelescopeController.gd" type="Script" id=1]
+[ext_resource path="res://Driver/GDSerialDriver.cs" type="Script" id=2]
+[ext_resource path="res://fonts/roboto/Roboto-Regular.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.0901961, 0.0901961, 0.0901961, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.2, 0, 0, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_blend = true
+
+[sub_resource type="DynamicFont" id=3]
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 3 )
+
+[node name="TelescopeControl" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="GDSerial" type="Node" parent="."]
+script = ExtResource( 2 )
+BaudRate = 9600
+DataBits = 8
+StopBits = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 595.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
+margin_right = 1014.0
+margin_bottom = 220.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 1004.0
+margin_bottom = 210.0
+rect_min_size = Vector2( 0, 200 )
+custom_styles/panel = SubResource( 2 )
+
+[node name="ScreenText" type="RichTextLabel" parent="PanelContainer/VBoxContainer/MarginContainer/PanelContainer"]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 991.0
+margin_bottom = 197.0
+
+[node name="Buttons" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 224.0
+margin_right = 1014.0
+margin_bottom = 590.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/VBoxContainer/Buttons"]
+margin_right = 1014.0
+margin_bottom = 54.0
+size_flags_horizontal = 3
+columns = 3
+
+[node name="Connect" type="Button" parent="PanelContainer/VBoxContainer/Buttons/GridContainer"]
+margin_right = 335.0
+margin_bottom = 25.0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 3 )
+text = "Connect"
+
+[node name="UpdateScreen" type="Button" parent="PanelContainer/VBoxContainer/Buttons/GridContainer"]
+margin_left = 339.0
+margin_right = 674.0
+margin_bottom = 25.0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 3 )
+text = "Refresh"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Buttons/GridContainer"]
+margin_left = 678.0
+margin_right = 1013.0
+margin_bottom = 25.0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Buttons/GridContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 37.0
+margin_bottom = 22.0
+custom_fonts/font = SubResource( 3 )
+text = "Port: "
+valign = 1
+
+[node name="TextEdit" type="TextEdit" parent="PanelContainer/VBoxContainer/Buttons/GridContainer/HBoxContainer"]
+margin_left = 41.0
+margin_right = 335.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 3 )
+
+[node name="Enter" type="Button" parent="PanelContainer/VBoxContainer/Buttons/GridContainer"]
+margin_top = 29.0
+margin_right = 335.0
+margin_bottom = 54.0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 3 )
+text = "Enter"
+
+[node name="Enter2" type="Button" parent="PanelContainer/VBoxContainer/Buttons/GridContainer"]
+margin_left = 339.0
+margin_top = 29.0
+margin_right = 674.0
+margin_bottom = 54.0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 3 )
+text = "Mode"
+
+[node name="Enter3" type="Button" parent="PanelContainer/VBoxContainer/Buttons/GridContainer"]
+margin_left = 678.0
+margin_top = 29.0
+margin_right = 1013.0
+margin_bottom = 54.0
+size_flags_horizontal = 7
+size_flags_vertical = 7
+custom_fonts/font = SubResource( 3 )
+text = "Goto"
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Buttons/GridContainer/Connect" to="." method="open_port"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Buttons/GridContainer/UpdateScreen" to="." method="update_screen"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Buttons/GridContainer/Enter" to="." method="command" binds= [ ":EK13#" ]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Buttons/GridContainer/Enter2" to="." method="command" binds= [ ":EK9#" ]]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Buttons/GridContainer/Enter3" to="." method="command" binds= [ ":EK71#" ]]
